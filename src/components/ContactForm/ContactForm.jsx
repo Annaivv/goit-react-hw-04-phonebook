@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+
 import { Field, Form, Input, Button } from './ContactForm.styled';
 
 export default function ContactForm({ onSubmit }) {
-  // const [name, setName] = useState('');
-
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.currentTarget;

@@ -4,6 +4,8 @@ import { nanoid } from 'nanoid';
 import { GlobalStyle } from './GlobalStyle';
 import { Layout } from './Layout';
 import ContactForm from './ContactForm/ContactForm';
+import Filter from './Filter/Filter';
+import ContactList from './ContactList/ContactList';
 
 const initialContacts = [
   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -27,13 +29,40 @@ export const App = () => {
       }
     }
     setContacts(prevState => [...prevState, { id: nanoid(), name, number }]);
-    console.log(contacts);
   };
+
+  const deleteContact = contactId => {
+    setContacts(prevState =>
+      prevState.filter(contact => contact.id !== contactId)
+    );
+    // this.setState(prevState => ({
+    //   contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    // }));
+  };
+
+  const getVisibleContacts = () => {
+    const normalizedFilter = filter.toLowerCase();
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter)
+    );
+  };
+
+  const filteredContacts = getVisibleContacts();
 
   return (
     <Layout>
       <h1>Phonebook</h1>
       <ContactForm onSubmit={addContact} />
+      <h2>Contacts</h2>
+      <Filter
+        value={filter}
+        onChange={evt => {
+          setFilter(evt.currentTarget.value);
+        }}
+      />
+      {contacts.length > 0 && (
+        <ContactList items={filteredContacts} onDelete={deleteContact} />
+      )}
       <GlobalStyle />
     </Layout>
   );
