@@ -1,5 +1,5 @@
 import '../index.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { GlobalStyle } from './GlobalStyle';
 import { Layout } from './Layout';
@@ -15,8 +15,14 @@ const initialContacts = [
 ];
 
 export const App = () => {
-  const [contacts, setContacts] = useState(initialContacts);
+  const [contacts, setContacts] = useState(
+    JSON.parse(window.localStorage.getItem('contacts')) ?? initialContacts
+  );
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const addContact = (name, number) => {
     for (const contact of contacts) {
@@ -35,9 +41,6 @@ export const App = () => {
     setContacts(prevState =>
       prevState.filter(contact => contact.id !== contactId)
     );
-    // this.setState(prevState => ({
-    //   contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-    // }));
   };
 
   const getVisibleContacts = () => {
@@ -46,8 +49,6 @@ export const App = () => {
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
-
-  const filteredContacts = getVisibleContacts();
 
   return (
     <Layout>
@@ -61,7 +62,7 @@ export const App = () => {
         }}
       />
       {contacts.length > 0 && (
-        <ContactList items={filteredContacts} onDelete={deleteContact} />
+        <ContactList items={getVisibleContacts()} onDelete={deleteContact} />
       )}
       <GlobalStyle />
     </Layout>
