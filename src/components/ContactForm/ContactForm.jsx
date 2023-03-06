@@ -12,7 +12,7 @@ export default function ContactForm({ onSubmit }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} autoComplete="off">
       <Field>
         Name
         <Input

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Form = styled.form.attrs({ autocomplete: 'off' })`
+export const Form = styled.form`
   border: 1px solid black;
   border-radius: 4px;
   margin-top: 20px;
